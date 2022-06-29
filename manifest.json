@@ -5,7 +5,8 @@
     "description": "Just drag n click to memo",
     "author": "berry2971",
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js",
+        "type": "module"
     },
     "content_scripts": [
         {

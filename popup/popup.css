@@ -30,6 +30,7 @@ body {
 .memoItem {
     background-color: rgb(255, 217, 0);
     margin: 3px;
+    padding: 3px;
 }
 
 .delBtn {
