@@ -15,7 +15,7 @@
         }
     ],
     "permissions": [
-        "contextMenus", "storage", "tabs"
+        "contextMenus", "storage"
     ],
     "action": {
         "default_popup": "popup/popup.html",
