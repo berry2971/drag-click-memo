@@ -33,8 +33,14 @@ body {
     padding: 3px;
 }
 
-.delBtn {
+.delBtn, .editBtn {
     border-style: none;
     background-color: white;
     float: right;
+}
+
+.memoEditTextArea {
+    border-style: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 90%;
 }

@@ -24,20 +24,53 @@ function createMemoItemElement(memo) {
     memoItem.setAttribute("data-createDate", memo.createDate);
     memoItem.setAttribute("data-lastUpdateDate", memo.lastUpdateDate);
 
+    const editBtn = document.createElement("button");
+    editBtn.classList.add("editBtn");
+    editBtn.setAttribute("data-mode", "wait");
+    editBtn.innerText = "수정";
+    editBtn.addEventListener("click", (event) => {
+        const editMode = editBtn.getAttribute("data-mode");
+        const memoEl = event.target.parentElement;
+        const content = memoEl.getElementsByClassName("memo-item-content")[0];
+        if (editMode === "wait") {
+            const originalText = content.innerText;
+            content.innerText = "";
+
+            const inputBox = document.createElement("textarea");
+            inputBox.innerText = originalText;
+            inputBox.classList.add("memoEditTextArea");
+            content.appendChild(inputBox);
+
+            editBtn.setAttribute("data-mode", "input");
+            editBtn.innerText = "적용";
+        } else if (editMode === "input") {
+            const inputBox = content.getElementsByTagName("textarea")[0];
+            const editText = inputBox.value;
+            content.innerHTML = "";
+            content.innerText = editText;
+            chrome.runtime.sendMessage({ event: "edit-memo", id: memo.id, content: editText });
+            editBtn.setAttribute("data-mode", "wait");
+            editBtn.innerText = "수정";
+        }
+    });
+
     const delBtn = document.createElement("button");
     delBtn.classList.add("delBtn");
-    delBtn.innerText = "×";
+    delBtn.innerText = "삭제";
     delBtn.addEventListener("click", (event) => {
         event.target.parentElement.classList.add("hidden");
         chrome.runtime.sendMessage({ event: "delete-memo", id: memo.id });
     });
 
     const memoItem_date = document.createElement("div");
+    memoItem_date.classList.add("memo-item-Date");
     memoItem_date.innerText = dateStringToFormattedDateString(memo.createDate);
 
     const memoItem_content = document.createElement("div");
+    memoItem_content.classList.add("memo-item-content");
     memoItem_content.innerText += memo.content;
 
+    memoItem.appendChild(editBtn);
     memoItem.appendChild(delBtn);
     memoItem.appendChild(memoItem_date);
     memoItem.appendChild(memoItem_content);
