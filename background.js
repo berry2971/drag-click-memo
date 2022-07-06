@@ -10,6 +10,8 @@ chrome.runtime.onMessage.addListener(
             postText(request.content);
         } else if (request.event === "delete-memo") {
             deleteMemo(request.id);
+        } else if (request.event === "edit-memo") {
+            editMemo(request.id, request.content);
         }
     }
 )
@@ -70,6 +72,14 @@ function deleteMemo(id) {
     chrome.storage.sync.get(["memos"], (resp) => {
         const memos = resp.memos;
         delete memos[id];
+        chrome.storage.sync.set({"memos": memos}, () => {});
+    });
+}
+
+function editMemo(id, content) {
+    chrome.storage.sync.get(["memos"], (resp) => {
+        const memos = resp.memos;
+        memos[id]["content"] = content;
         chrome.storage.sync.set({"memos": memos}, () => {});
     });
 }
