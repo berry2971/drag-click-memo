@@ -46,13 +46,21 @@ function createMemoItemElement(memo) {
 }
 
 function dateStringToFormattedDateString(dateString) {
-    const date = new Date(dateString);
-    const y = date.getFullYear();
-    const m = date.getMonth() + 1;
-    const d = date.getDate();
-    const day = "일월화수목금토"[date.getDay()];
-    const hour = date.getHours();
-    const min = date.getMinutes();
-    const sec = date.getSeconds();
-    return `${y}.${m}.${d} ${day} ${hour}:${min}:${sec}`;
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    const date = dateObj.getDate();
+    const day = getKoreanDayString(dateObj.getDay());
+    const hour = zeroPad(dateObj.getHours(), 2);
+    const min = zeroPad(dateObj.getMinutes(), 2);
+    const sec = zeroPad(dateObj.getSeconds(), 2);
+    return `${year}.${month}.${date} ${day} ${hour}:${min}:${sec}`;
+}
+
+function getKoreanDayString(day) {
+    return "일월화수목금토"[day];
+}
+
+function zeroPad(str, length) {
+    return String(str).padStart(length, '0');
 }
