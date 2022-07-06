@@ -38,6 +38,7 @@ function createMemoItemElement(memo) {
 
             const inputBox = document.createElement("textarea");
             inputBox.innerText = originalText;
+            inputBox.classList.add("memoEditTextArea");
             content.appendChild(inputBox);
 
             editBtn.setAttribute("data-mode", "input");
