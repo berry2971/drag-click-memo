@@ -17,6 +17,12 @@ chrome.storage.sync.get(["memos"], (resp) => {
 });
 
 function createMemoItemElement(memo) {
+    const delBtn = document.createElement("button");
+    const editBtn = document.createElement("button");
+    const cancelBtn = document.createElement("button");
+    let originalText;
+    let content;
+
     const memoItem = document.createElement("div");
     memoItem.classList.add("memoItem");
 
@@ -24,16 +30,15 @@ function createMemoItemElement(memo) {
     memoItem.setAttribute("data-createDate", memo.createDate);
     memoItem.setAttribute("data-lastUpdateDate", memo.lastUpdateDate);
 
-    const editBtn = document.createElement("button");
     editBtn.classList.add("editBtn");
     editBtn.setAttribute("data-mode", "wait");
     editBtn.innerText = "수정";
     editBtn.addEventListener("click", (event) => {
         const editMode = editBtn.getAttribute("data-mode");
         const memoEl = event.target.parentElement;
-        const content = memoEl.getElementsByClassName("memo-item-content")[0];
+        content = memoEl.getElementsByClassName("memo-item-content")[0];
         if (editMode === "wait") {
-            const originalText = content.innerText;
+            originalText = content.innerText;
             content.innerText = "";
 
             const inputBox = document.createElement("textarea");
@@ -43,6 +48,8 @@ function createMemoItemElement(memo) {
 
             editBtn.setAttribute("data-mode", "input");
             editBtn.innerText = "적용";
+
+            cancelBtn.classList.remove("hidden");
         } else if (editMode === "input") {
             const inputBox = content.getElementsByTagName("textarea")[0];
             const editText = inputBox.value;
@@ -51,15 +58,26 @@ function createMemoItemElement(memo) {
             chrome.runtime.sendMessage({ event: "edit-memo", id: memo.id, content: editText });
             editBtn.setAttribute("data-mode", "wait");
             editBtn.innerText = "수정";
+            cancelBtn.classList.add("hidden");
         }
     });
 
-    const delBtn = document.createElement("button");
     delBtn.classList.add("delBtn");
     delBtn.innerText = "삭제";
     delBtn.addEventListener("click", (event) => {
         event.target.parentElement.classList.add("hidden");
         chrome.runtime.sendMessage({ event: "delete-memo", id: memo.id });
+    });
+
+    cancelBtn.classList.add("cancelBtn");
+    cancelBtn.classList.add("hidden");
+    cancelBtn.innerText = "취소";
+    cancelBtn.addEventListener("click", (event) => {
+        content.innerHTML = "";
+        content.innerText = originalText;
+        editBtn.innerText = "수정";
+        editBtn.setAttribute("data-mode", "wait");
+        cancelBtn.classList.add("hidden");
     });
 
     const memoItem_date = document.createElement("div");
@@ -70,8 +88,9 @@ function createMemoItemElement(memo) {
     memoItem_content.classList.add("memo-item-content");
     memoItem_content.innerText += memo.content;
 
-    memoItem.appendChild(editBtn);
     memoItem.appendChild(delBtn);
+    memoItem.appendChild(cancelBtn);
+    memoItem.appendChild(editBtn);
     memoItem.appendChild(memoItem_date);
     memoItem.appendChild(memoItem_content);
 

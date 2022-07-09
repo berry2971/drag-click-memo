@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Drag-Click-Memo",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "Just drag n click to memo",
     "author": "berry2971",
     "background": {
