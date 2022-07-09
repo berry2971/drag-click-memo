@@ -58,6 +58,7 @@ function createMemoItemElement(memo) {
             chrome.runtime.sendMessage({ event: "edit-memo", id: memo.id, content: editText });
             editBtn.setAttribute("data-mode", "wait");
             editBtn.innerText = "수정";
+            cancelBtn.classList.add("hidden");
         }
     });
 
