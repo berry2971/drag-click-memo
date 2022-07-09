@@ -70,8 +70,8 @@ function createMemoItemElement(memo) {
     memoItem_content.classList.add("memo-item-content");
     memoItem_content.innerText += memo.content;
 
-    memoItem.appendChild(editBtn);
     memoItem.appendChild(delBtn);
+    memoItem.appendChild(editBtn);
     memoItem.appendChild(memoItem_date);
     memoItem.appendChild(memoItem_content);
 
