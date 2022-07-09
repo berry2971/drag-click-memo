@@ -33,7 +33,7 @@ body {
     padding: 3px;
 }
 
-.delBtn, .editBtn {
+.delBtn, .editBtn, .cancelBtn {
     border-style: none;
     background-color: white;
     float: right;
